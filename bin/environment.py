@@ -47,10 +47,12 @@ print log_config_path
 execfile(log_config_path, log_config)
 
 ad_biz_conf = {}
-ad_biz_conf_path = os.path.join(SERVICE_CONF_PATH, 'ad_biz_conf')
+ad_biz_conf_path = os.path.join(SERVICE_CONF_PATH, 'ad_biz.conf')
+execfile(ad_biz_conf_path, ad_biz_conf)
+ad_biz_conf = ad_biz_conf['ad_biz_conf']
 
 
-def main():
+def main(real_main, service_name):
     """
     将日志管理字段添加进系统
     :return:
@@ -58,6 +60,8 @@ def main():
     log.init_log(log_path='/home/dk/code/log/ad_main', log_name='ad_main', level=log_config["level"],
                  test=http_config['test'])
     logging.info("init  log")
+    logging.debug('ad_biz_cong is %s:' % str(ad_biz_conf))
+    real_main(service_name)
 
 
 if __name__ == '__main__':

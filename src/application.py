@@ -122,13 +122,13 @@ class App(Application):
     def __init__(self, service_name, hostid, out_port,
                  handlers,
                  http_config,
-                 luna_biz_config,
+                 ad_biz_config,
                  db_factory,
                  static_path=None):
         """ init sth"""
         self._hostid = hostid
         self.http_config = http_config
-        self.luna_biz_config = luna_biz_config
+        self.ad_biz_config = ad_biz_config
         self.db_factory = db_factory
 
         settings = {
