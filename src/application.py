@@ -25,6 +25,7 @@ import tornado.web
 from tornado.web import Application
 
 from src.handler.main import MainHandler
+from src.handler.ad_recommend_handler import AdRecommendHandler
 
 io_loop = None
 http_server = None
@@ -146,7 +147,8 @@ class App(Application):
 
 
 HANDLERS = [
-    (r'/', MainHandler)
+    (r'/', MainHandler),
+    (r'/ad_re', AdRecommendHandler)
 ]
 
 if __name__ == "__main__":

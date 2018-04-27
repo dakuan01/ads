@@ -12,6 +12,8 @@ import commands
 import os
 import sys
 import signal
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 sys.path.append('../')
 
