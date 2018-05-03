@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """
-File: get_data.py
+File: insert_db.py
 Author: cwk
 Date: 3/29/18
 """
 
 import time
+import random
 import requests
 import MySQLdb
 import sys
@@ -16,14 +17,13 @@ sys.setdefaultencoding('utf-8')
 
 
 city_list = {'深圳', '西安', '北京', '上海'}
-job_list = {'c', 'c++', 'python', 'java', '数据挖掘'}
-file_name_base = '%s_%s.csv'
+job_list = {'c', 'c++', 'python', 'java', '数据挖掘', 'C', 'C++', 'Python', 'Java'}
 base_url = 'https://www.lagou.com/jobs/%s.html'
 sql_conn = MySQLdb.connect(host='localhost', user='root', db='test', passwd='h', charset='utf8')
 sql_curs = sql_conn.cursor()
 sql_insert = """
-             INSERT INTO ad_info (companyName, positionfullName, positionName, city, positionAdvantage, salarymin, salarymax, workYear, request_url, stime, etime)
-             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, '2018-03-29 00:00:00', '2018-06-30 23:59:59')
+             INSERT INTO ad_info (companyName, positionfullName, positionName, city, positionAdvantage, salarymin, salarymax, workYear, request_url, record_url, priority, clk_id, stime, etime)
+             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '2018-03-29 00:00:00', '2018-06-30 23:59:59')
 """
 
 
@@ -51,39 +51,51 @@ def lagou(page, position, city):
     resp = requests.post(url, data=dates, headers=headers)
     print(resp.content.decode('utf-8'))
     result = resp.json()['content']['positionResult']['result']
-    # file_name = file_name_base % (city, position)
-    # fw = open(file_name, 'w')
-    # for ob in result:
-    #     out_str = ''
-    #     companyFullName = ob['companyFullName']
-    #     out_str = companyFullName + ','
-    #     positionName = ob['positionName']
-    #     out_str += (positionName + ',')
-    #     city = ob['city']
-    #     out_str += (city + ',')
-    #     positionAdvantage = ob['positionAdvantage']
-    #     out_str += (positionAdvantage + ',')
-    #     salary = ob['salary']
-    #     out_str += (salary + ',')
-    #     workYear = ob['workYear']
-    #     out_str += (workYear + ',')
-    #     companyLabelList = '@'.join(ob['companyLabelList'])
-    #     out_str += (companyLabelList + ',')
-    #     positionId = ob['positionId']
-    #     request_url = base_url % positionId
-    #     out_str += (request_url + '\n')
-    #     print out_str
-    #     fw.write(out_str)
-    # fw.close()
+    for ob in result:
+        companyFullName = ob['companyFullName']
+        positionName = ob['positionName']
+        posname = ''
+        for item in job_list:
+            print item
+            if item in positionName:
+                posname = item
+                print item
+                break
+
+        city = ob['city']
+        positionAdvantage = ob['positionAdvantage']
+        salary = ob['salary']
+        if '-' in salary:
+            salary_list = salary.split('-')
+            salarymin = salary_list[0][0: 2]
+            salarymax = salary_list[1][0: 2]
+        else:
+            continue
+        workYear = ob['workYear'][0: 1]
+        positionId = ob['positionId']
+        request_url = base_url % positionId
+        priority = random.randint(0, 30)
+        record_url = 'localhost:9999/cpc_clk?positionId=%s' % positionId
+        # print sql_insert % (companyFullName, positionName, posname, city, positionAdvantage,
+        #                     salarymin, salarymax, workYear, request_url, record_url, priority)
+        sql_curs.execute(sql_insert, (companyFullName, positionName, posname, city,
+                                      positionAdvantage, salarymin, salarymax, workYear,
+                                      request_url, record_url, priority, positionId))
+    sql_conn.commit()
 
 
 def main():
     for city in city_list:
         for job in job_list:
-            print city, job
-            lagou(1, job, city)
-            time.sleep(1)
+            for page in range(1, 10):
+                print page, job, city
+                try:
+                    lagou(page, job, city)
+                except Exception as e:
+                    print str(e)
+                time.sleep(1)
 
 
 if __name__ == '__main__':
     main()
+    sql_conn.close()

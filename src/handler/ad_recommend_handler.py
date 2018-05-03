@@ -9,6 +9,7 @@ Date: 4/26/18
 
 import logging
 import json
+import os
 from src.biz.base_handler import BaseHandler
 from src.biz import public_var
 from src.biz import http_util
@@ -48,7 +49,7 @@ class AdRecommendHandler(BaseHandler):
             ret_data['code'] = public_var.FAILED_MYSQL_QUERY
             ret_data['msg'] = public_var.ERROR_MESSAGE[public_var.FAILED_MYSQL_QUERY]
 
-        self.write(json.dumps(ret_data, ensure_ascii=False, cls=http_util.CJsonEncoder))
+        self.write(json.dumps(ret_data, ensure_ascii=False))
 
     def get_url_request_info(self):
         """
@@ -62,3 +63,6 @@ class AdRecommendHandler(BaseHandler):
         param_dict['info'] = self.get_argument('info', None)
         return param_dict
 
+
+if __name__ == '__main__':
+    print "no process in __main__, %s" % os.path.realpath(__file__)

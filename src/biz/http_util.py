@@ -9,6 +9,7 @@ Date: 4/25/18
 
 import json
 import datetime
+import os
 from decimal import Decimal
 
 
@@ -25,3 +26,7 @@ class CJsonEncoder(json.JSONEncoder):
         else:
             # raise TypeError("Object of type '%s' is not JSON serializable" % type(obj).__name__)
             return json.JSONEncoder.default(self, obj)
+
+
+if __name__ == '__main__':
+    print "no process in __main__, %s" % os.path.realpath(__file__)

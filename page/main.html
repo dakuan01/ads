@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>广告</title>
-</head>
-
-<form action="localhost:9999/" method="GET">
-retrieval:<br>
-<input type="text" name="retrieval">
-<br><br>
-<input type="submit" value="搜索">
-</form>
-<body>
-
-</body>
-</html>
+<html>
+   <head>
+      <title>{{ title }}</title>
+   </head>
+   <body>
+     <ul>
+       {% for item in items %}
+         <li>{{ escape(item) }}</li>
+       {% end %}
+     </ul>
+   </body>
+ </html>

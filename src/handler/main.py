@@ -8,6 +8,7 @@ Date: 4/13/18
 """
 
 import logging
+import os
 import json
 from src.biz import sql_pattern
 from src.biz.base_handler import BaseHandler
@@ -46,8 +47,9 @@ class MainHandler(BaseHandler):
         self.content_type = 'html'
 
     def get(self):
+        items = ["Item 1", "Item 2", "Item 3"]
+        self.render("main.html", title="My title", items=items)
 
-        self.write(main_page)
 
-
-
+if __name__ == '__main__':
+    print "no process in __main__, %s" % os.path.realpath(__file__)

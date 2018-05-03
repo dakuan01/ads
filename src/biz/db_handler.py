@@ -9,6 +9,7 @@ Date: 4/19/18
 
 import MySQLdb
 import logging
+import os
 
 
 class MysqlDb(object):
@@ -25,8 +26,12 @@ class MysqlDb(object):
                                     passwd=self.db_info['passwd'], db=self.db_info['db'],
                                     charset=self.db_info['charset'])
         self.curs = self.conn.cursor()
-        logging.info("sssssssssssssssssssss")
+        logging.info("init db %s" % str(self.db_info['db']))
 
     def destory(self):
         """destory db_conn"""
         self.conn.close()
+
+
+if __name__ == '__main__':
+    print "no process in __main__, %s" % os.path.realpath(__file__)
