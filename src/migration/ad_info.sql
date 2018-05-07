@@ -39,3 +39,14 @@ CREATE TABLE IF NOT EXISTS `tbl_cpc_clk` (
 	  UNIQUE KEY (`ad_id`, `date`, `clk_id`),
 	  KEY `clk_id` (`clk_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8;
+
+CREATE TABLE IF NOT EXISTS `tbl_tariff` (
+    `id`                  INT(11) UNSIGNED        NOT NULL AUTO_INCREMENT                    COMMENT '自增id',
+    `ad_id`               INT(11)                 NOT NULL DEFAULT 0                         COMMENT '广告id',
+    `stored`              DECIMAL(10, 2)          NOT NULL DEFAULT '0.00'                    COMMENT '预存金额',
+    `balance`             DECIMAL(10, 2)          NOT NULL DEFAULT '0.00'                    COMMENT '剩余金额',
+    `cpc_spend`           DECIMAL(10, 2)          NOT NULL DEFAULT '0.00'                    COMMENT '每次点击费用',
+    `utime`               TIMESTAMP               NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '记录更新时间',
+    PRIMARY KEY (`id`),
+    KEY `ad_id` (`ad_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8;

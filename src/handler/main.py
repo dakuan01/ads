@@ -13,6 +13,7 @@ import json
 from src.biz import sql_pattern
 from src.biz.base_handler import BaseHandler
 from src.biz import http_util
+from src.biz import public_var
 
 
 main_page = """
@@ -35,6 +36,21 @@ info:<br>
 </html>
 """
 
+test_page = """
+<html>
+<head>
+<SCRIPT LANGUAGE="JavaScript">
+function adClick(ad, site) {
+window.open(ad);
+window.location = site;}
+</script>
+</head>
+<body>
+<a href="javascript:adClick('https://www.lagou.com/jobs/3022338.html', '/cpc_clk');">名称</a>
+</body>
+</html>
+"""
+
 
 class MainHandler(BaseHandler):
     """主页"""
@@ -47,8 +63,13 @@ class MainHandler(BaseHandler):
         self.content_type = 'html'
 
     def get(self):
-        items = ["Item 1", "Item 2", "Item 3"]
-        self.render("main.html", title="My title", items=items)
+
+        # template_vars = {
+        #     'title': u'招聘信息',
+        #     'ads': ads
+        # }
+        # self.make_return(public_var.HTTP_OK, template_vars, 'ok', 'main.html')
+        self.write(main_page)
 
 
 if __name__ == '__main__':

@@ -22,6 +22,7 @@ class AdRecommendHandler(BaseHandler):
         设置数据交互格式
         :return:
         """
+        self.content_type = 'html'
 
     def get(self):
         """
@@ -44,12 +45,22 @@ class AdRecommendHandler(BaseHandler):
         if falg:
             ret_data['code'] = public_var.RESULT_CODE_SUC
             ret_data['msg'] = 'OK'
-            ret_data['ads'] = result
+            ret_data['result'] = result
         else:
             ret_data['code'] = public_var.FAILED_MYSQL_QUERY
             ret_data['msg'] = public_var.ERROR_MESSAGE[public_var.FAILED_MYSQL_QUERY]
+        template_vars = {
+            'title': u'招聘信息',
+            'status': json.dumps(falg),
+            'ads': result,
+            'ret_code': ret_data['code'],
+            'msg': ret_data['msg']
+        }
+        logging.debug("result length is %s" % len(result))
+        logging.debug(result)
+        # logging.debug("template_vars is %s" % json.dumps(template_vars))
 
-        self.write(json.dumps(ret_data, ensure_ascii=False))
+        self.make_return(ret_data['code'], template_vars, ret_data['msg'], 'result.html')
 
     def get_url_request_info(self):
         """

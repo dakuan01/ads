@@ -13,11 +13,26 @@ import logging
 from src.biz.base_handler import BaseHandler
 
 
+result = """
+<html>
+<head>
+<script>
+window.back()
+</script>
+</head>
+</html>
+"""
+
+
+
 class CpcClkHandler(BaseHandler):
 
     def get(self):
-        logging.debug("test")
-        self.write('hello world')
+
+        positionId = self.get_argument('positionId')
+        logging.debug('position id is %s' % positionId)
+
+        self.write(result)
 
 
 if __name__ == '__main__':

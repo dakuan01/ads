@@ -9,17 +9,17 @@ Date: 4/12/18
 
 import logging
 import os
+import json
 import jieba
 import time
-from tornado.web import RequestHandler
+from jinja_base_handler import JinjaBaseHandler
+from handler import Handler
 import public_var
 import sql_pattern
 
 
-class BaseHandler(RequestHandler):
+class BaseHandler(Handler, JinjaBaseHandler):
 
-    def __init__(self, application, request, **kwargs):
-        super(BaseHandler, self).__init__(application, request, **kwargs)
 
     def get_data_search(self, param):
         """
@@ -127,10 +127,12 @@ class BaseHandler(RequestHandler):
         :param datas:
         :return:
         """
+        base_text = '%s,%s,月薪%sk-%sk'
         result = list()
         for data in datas:
             item = dict()
             item['ad_id'] = data[0]
+            text = base_text % (data[1], data[2], data[6], data[7])
             item['companyName'] = data[1]
             item['positionfullName'] = data[2]
             item['positionName'] = data[3]
@@ -142,6 +144,7 @@ class BaseHandler(RequestHandler):
             item['request_url'] = data[9]
             item['record_url'] = data[10]
             item['priority'] = data[11]
+            item['text'] = text
             result.append(item)
         return result
 

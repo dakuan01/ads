@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, width=device-width">
+    <title>{{title}}</title>
+    <SCRIPT LANGUAGE="JavaScript">
+    function adClick(ad, site) {
+        window.open(ad);
+        window.location = site;
+        // window.back();
+    }
+    </script>
+</head>
+<body>
+    <ul>
+        {% for ad in ads %}
+            <li><a href="javascript:adClick('{{ ad.request_url }}', '{{ ad.record_url }}')">{{ ad.text }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

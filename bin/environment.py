@@ -42,7 +42,7 @@ print '-' * 100
 http_config = {}
 http_config_path = os.path.join(CONF_PATH, 'http.conf')
 execfile(http_config_path)
-http_config.update({"template": os.path.join(WORK_ROOT, 'page')})
+http_config.update({"template": os.path.join(WORK_ROOT, 'src/template')})
 
 log_config = {}
 log_config_path = os.path.join(CONF_PATH, "log.conf")

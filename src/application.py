@@ -27,6 +27,7 @@ from tornado.web import Application
 from src.handler.main import MainHandler
 from src.handler.ad_recommend_handler import AdRecommendHandler
 from src.handler.cpc_clk_handler import CpcClkHandler
+from src.handler.add_new_ad_handler import AddNewAdHandler
 
 io_loop = None
 http_server = None
@@ -99,7 +100,7 @@ def start_http(service_name, hostid, http_config, ad_biz_config, db_factory):
                       http_config,
                       ad_biz_config,
                       db_factory,
-                      static_path=http_config['static_path'])
+                      http_config['template'])
     application.req_id = 0
     if 'timeout' in http_config:
         application.timeout = http_config['timeout']
@@ -126,7 +127,7 @@ class App(Application):
                  http_config,
                  ad_biz_config,
                  db_factory,
-                 static_path=None):
+                 template_path=None):
         """ init sth"""
         self._hostid = hostid
         self.http_config = http_config
@@ -138,19 +139,23 @@ class App(Application):
             'service_id': service_name,
             'host_id': str(self._hostid),
             'compress_response': True,
-            'static_path': os.path.join(static_path, "dist"),
-            "login_url": "/"
+            "login_url": "/",
+            "template_path": template_path
         }
-
+        logging.debug(str(settings))
         Application.__init__(self, handlers, **settings)
 
         self.region = self.http_config.get('region', "china")
+        self.jinja_env = jinja2.Environment(trim_blocks=True, lstrip_blocks=True,
+                                            loader=jinja2.FileSystemLoader(
+                                                settings['template_path']))
 
 
 HANDLERS = [
     (r'/', MainHandler),
     (r'/ad_re', AdRecommendHandler),
-    (r'/cpc_clk', CpcClkHandler)
+    (r'/cpc_clk', CpcClkHandler),
+    (r'/add_new_ad', AddNewAdHandler)
 ]
 
 if __name__ == "__main__":

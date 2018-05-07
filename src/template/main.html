@@ -1,0 +1,11 @@
+<html>
+<body>
+<title>{{title}}</title>
+<ul>
+{% for ad in ads %}
+<li><a href="{{ ad.request_url }}">{{ ad.text }}</a></li>
+{% endfor %}
+</ul>
+</body>
+</html>
+

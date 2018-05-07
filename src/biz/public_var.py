@@ -7,6 +7,7 @@ Author: cwk
 Date: 4/19/18
 """
 
+HTTP_OK = 200
 RESULT_CODE_SUC = 2000
 RESULT_CODE_FAILED = 5000
 

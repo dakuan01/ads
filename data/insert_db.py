@@ -26,6 +26,8 @@ sql_insert = """
              VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, '2018-03-29 00:00:00', '2018-06-30 23:59:59')
 """
 
+posid_set = set()
+
 
 def lagou(page, position, city):
     """
@@ -78,9 +80,11 @@ def lagou(page, position, city):
         record_url = 'localhost:9999/cpc_clk?positionId=%s' % positionId
         # print sql_insert % (companyFullName, positionName, posname, city, positionAdvantage,
         #                     salarymin, salarymax, workYear, request_url, record_url, priority)
-        sql_curs.execute(sql_insert, (companyFullName, positionName, posname, city,
-                                      positionAdvantage, salarymin, salarymax, workYear,
-                                      request_url, record_url, priority, positionId))
+        if positionId not in posid_set:
+            sql_curs.execute(sql_insert, (companyFullName, positionName, posname, city,
+                                          positionAdvantage, salarymin, salarymax, workYear,
+                                          request_url, record_url, priority, positionId))
+            posid_set.add(positionId)
     sql_conn.commit()
 
 
