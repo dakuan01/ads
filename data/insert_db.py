@@ -12,8 +12,11 @@ import random
 import requests
 import MySQLdb
 import sys
+import random
 reload(sys)
 sys.setdefaultencoding('utf-8')
+sys.path.append('../')
+from src.biz import sql_pattern
 
 
 city_list = {'深圳', '西安', '北京', '上海'}
@@ -51,9 +54,12 @@ def lagou(page, position, city):
     }
     url = 'https://www.lagou.com/jobs/positionAjax.json?city=' + city + '&needAddtionalResult=false&isSchoolJob=0'
     resp = requests.post(url, data=dates, headers=headers)
-    print(resp.content.decode('utf-8'))
+    # print(resp.content.decode('utf-8'))
     result = resp.json()['content']['positionResult']['result']
     for ob in result:
+        sql_curs.execute(sql_pattern.get_next_primary_key, ('ad_info', 'test'))
+        ad_id = sql_curs.fetchone()
+        print 'ad_id =', ad_id
         companyFullName = ob['companyFullName']
         positionName = ob['positionName']
         posname = ''
@@ -77,7 +83,7 @@ def lagou(page, position, city):
         positionId = ob['positionId']
         request_url = base_url % positionId
         priority = random.randint(0, 30)
-        record_url = 'localhost:9999/cpc_clk?positionId=%s' % positionId
+        record_url = '/cpc_clk?positionId=%s&ad_id=%s' % (positionId, ad_id)
         # print sql_insert % (companyFullName, positionName, posname, city, positionAdvantage,
         #                     salarymin, salarymax, workYear, request_url, record_url, priority)
         if positionId not in posid_set:
@@ -85,6 +91,26 @@ def lagou(page, position, city):
                                           positionAdvantage, salarymin, salarymax, workYear,
                                           request_url, record_url, priority, positionId))
             posid_set.add(positionId)
+            stored = random.randint(100, 10000)
+            cpc_spend = round(random.uniform(0, 3), 2)
+            sql_curs.execute(sql_pattern.sql_insert_cpc_data, (ad_id, stored, stored, cpc_spend))
+    sql_conn.commit()
+
+
+def update():
+    sql_curs.execute("select ad_id, clk_id from ad_info")
+    rows = sql_curs.fetchall()
+    base_url = '/cpc_clk?positionId=%s&ad_id=%s'
+    count = 0
+    for row in rows:
+        record_url = base_url % (row[1], row[0])
+        print "update ad_info set record_url='%s' WHERE ad_id=%s" % (record_url, row[0])
+        sql_curs.execute("update ad_info set record_url='%s' WHERE ad_id=%s" % (record_url, row[0]))
+        count += 1
+        if count == 1000:
+            count = 0
+            sql_conn.commit()
+            print "*********************"
     sql_conn.commit()
 
 
@@ -93,6 +119,7 @@ def main():
         for job in job_list:
             for page in range(1, 10):
                 print page, job, city
+                # lagou(page, job, city)
                 try:
                     lagou(page, job, city)
                 except Exception as e:
@@ -101,5 +128,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    update()
     sql_conn.close()

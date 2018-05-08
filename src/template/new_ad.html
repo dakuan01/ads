@@ -8,59 +8,59 @@
 <form action="/add_new_ad" method="POST">
     公司全称:
     <br>
-        <input type="text" name="companyName">
+        <input type="text" name="companyName" required="required">
     <br>
     职位全称:
     <br>
-        <input type="text" name="positionfullName">
+        <input type="text" name="positionfullName" required="required">
     <br>
     职位简称:
     <br>
-        <input type="text" name="positionName">
+        <input type="text" name="positionName" required="required">
     <br>
     城市:
     <br>
-        <input type="text" name="city">
+        <input type="text" name="city" required="required">
     <br>
     公司福利:
     <br>
-        <input type="text" name="positionAdvantage">
+        <input type="text" name="positionAdvantage" required="required">
     <br>
     工资范围:
     <br>
-        <input type="text" name="salary" value="10k-20k">
+        <input type="text" name="salary" placeholder="10k-20k" required="required">
     <br>
     工作经验:
     <br>
-        <input type="text" name="workYear">
+        <input type="text" name="workYear" required="required">
     <br>
     落地页地址:
     <br>
-        <input type="text" name="request_url">
+        <input type="text" name="request_url" required="required">
     <br>
     优先级:
     <br>
-        <input type="text" name="priority">
+        <input type="text" name="priority" required="required">
     <br>
     点击ID:
     <br>
-        <input type="text" name="clk_id">
+        <input type="text" name="clk_id" required="required">
     <br>
     投放开始时间:
     <br>
-        <input type="datetime-local" step="01" name="stime">
+        <input type="datetime-local" step="01" name="stime" required="required">
     <br>
     投放结束时间:
     <br>
-        <input type="datetime-local" step="01" name="etime">
+        <input type="datetime-local" step="01" name="etime" required="required">
     <br>
     预存金额:
     <br>
-        <input type="number" name="stored" min="100">
+        <input type="number" name="stored" min="100" required="required">
     <br>
     每条点击费用:
     <br>
-        <input type="number" name="cpc_spend" min="0.1">
+        <input type="number" name="cpc_spend" min="0.1" required="required">
     <br>
     <input type="submit" value="提交">
 </form>

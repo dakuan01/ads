@@ -28,6 +28,7 @@ from src.handler.main import MainHandler
 from src.handler.ad_recommend_handler import AdRecommendHandler
 from src.handler.cpc_clk_handler import CpcClkHandler
 from src.handler.add_new_ad_handler import AddNewAdHandler
+from src.handler.query_performance import Query_Performance
 
 io_loop = None
 http_server = None
@@ -155,7 +156,8 @@ HANDLERS = [
     (r'/', MainHandler),
     (r'/ad_re', AdRecommendHandler),
     (r'/cpc_clk', CpcClkHandler),
-    (r'/add_new_ad', AddNewAdHandler)
+    (r'/add_new_ad', AddNewAdHandler),
+    (r'/query', Query_Performance)
 ]
 
 if __name__ == "__main__":
